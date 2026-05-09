@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Soporta al Bot</title>
+    <!-- SDK de Telegram WebApp -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <!-- Tu Script de Monetag -->
+	<script src="https://alwingulla.com/tag.min.js" data-zone="3327942" data-sdk="show_3327942"></script>
+</head>
+<body style="background-color: #1a1a1a; color: white; font-family: sans-serif; text-align: center; padding-top: 50px;">
+    
+    <div id="ad-container">
+        <h2>Viendo anuncio para desbloquear señal...</h2>
+        <p id="status">Cargando anuncio...</p>
+    </div>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.ready();
+        tg.expand();
+
+        function playAd() {
+            // CORRECCIÓN: Quitamos los paréntesis () en el typeof para verificar si la función EXISTE
+            if (typeof show_3327942 === 'function') {
+                show_3327942().then(() => {
+                    document.getElementById('status').innerText = "¡Anuncio completado! Gracias por tu soporte.";
+                    
+                    // Esperamos 2 segundos para que el usuario vea el mensaje de éxito y cerramos
+                    setTimeout(() => {
+                        tg.close(); 
+                    }, 2000);
+                }).catch((err) => {
+                    console.error("Error en Ad:", err);
+                    document.getElementById('status').innerText = "El anuncio no está disponible ahora. Volviendo al bot...";
+                    setTimeout(() => { tg.close(); }, 2000);
+                });
+            } else {
+                // Si el SDK aún no carga, esperamos un segundo y reintentamos
+                document.getElementById('status').innerText = "Conectando con el servidor de anuncios...";
+                setTimeout(playAd, 1000);
+            }
+        }
+
+        // Iniciamos el proceso cuando la página carga
+        window.onload = playAd;
+    </script>
+</body>
+</html>
+
