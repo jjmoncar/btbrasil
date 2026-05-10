@@ -1,54 +1,28 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Soporta al Bot</title>
+    <title>Cargando...</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <!-- ASEGÚRATE DE QUE ESTE SCRIPT SEA EL QUE TE DIO MONETAG EXACTAMENTE -->
-	<script src="https://alwingulla.com/tag.min.js" data-zone="3327942" data-sdk="show_3327942"></script>
-</head>
-<body style="background-color: #1a1a1a; color: white; font-family: sans-serif; text-align: center; padding: 50px 20px;">
-    
-    <div id="ad-container">
-        <h2>Soporta al Bot para ver la señal</h2>
-        <p id="status" style="color: #ccc;">Esperando al servidor de anuncios...</p>
-        
-        <!-- Botón de respaldo por si el auto-play falla -->
-        <button id="retry-btn" onclick="playAd()" style="display:none; background: #0088cc; color: white; border: none; padding: 15px 30px; border-radius: 10px; font-size: 16px; margin-top: 20px;">
-            VER ANUNCIO AHORA
-        </button>
-    </div>
-
     <script>
-        const tg = window.Telegram.WebApp;
-        tg.ready();
-
-        function playAd() {
-            const status = document.getElementById('status');
-            const btn = document.getElementById('retry-btn');
-
-            if (typeof show_3327942 === 'function') {
-                status.innerText = "Cargando anuncio...";
-                btn.style.display = "none";
-
-                show_3327942().then(() => {
-                    status.innerText = "¡Gracias! Volviendo al bot...";
-                    setTimeout(() => { tg.close(); }, 2000);
-                }).catch((err) => {
-                    status.innerText = "No hay anuncios disponibles en este momento.";
-                    btn.style.display = "block";
-                    btn.innerText = "REINTENTAR";
-                });
-            } else {
-                status.innerText = "Error: El SDK de anuncios no cargó. Revisa si tienes un Bloqueador de Anuncios activo.";
-                btn.style.display = "block";
-                btn.innerText = "INTENTAR CARGAR DE NUEVO";
-            }
-        }
-
-        // Intentar cargar automáticamente después de 2 segundos para dar tiempo al SDK
-        setTimeout(playAd, 2000);
+        window.onload = function() {
+            // REEMPLAZA ESTA URL POR TU DIRECT LINK DE MONETAG
+            const monetagUrl = "https://omg10.com/4/10987049";
+            
+            // Abrir el anuncio en una nueva pestaña
+            window.open(monetagUrl, '_blank');
+            
+            // Cerrar la mini app de Telegram después de un momento
+            setTimeout(() => {
+                window.Telegram.WebApp.close();
+            }, 3000);
+        };
     </script>
+</head>
+<body style="background: #1a1a1a; color: white; text-align: center; padding-top: 50px;">
+    <h2>Cargando anuncio de soporte...</h2>
+    <p>Si el anuncio no abre, toca el botón de abajo:</p>
+    <a href="TU_DIRECT_LINK_AQUÍ" target="_blank" style="background: #0088cc; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">VER ANUNCIO</a>
 </body>
 </html>
+
