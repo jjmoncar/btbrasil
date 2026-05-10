@@ -4,48 +4,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Soporta al Bot</title>
-    <!-- SDK de Telegram WebApp -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <!-- Tu Script de Monetag -->
+    <!-- ASEGÚRATE DE QUE ESTE SCRIPT SEA EL QUE TE DIO MONETAG EXACTAMENTE -->
 	<script src="https://alwingulla.com/tag.min.js" data-zone="3327942" data-sdk="show_3327942"></script>
 </head>
-<body style="background-color: #1a1a1a; color: white; font-family: sans-serif; text-align: center; padding-top: 50px;">
+<body style="background-color: #1a1a1a; color: white; font-family: sans-serif; text-align: center; padding: 50px 20px;">
     
     <div id="ad-container">
-        <h2>Viendo anuncio para desbloquear señal...</h2>
-        <p id="status">Cargando anuncio...</p>
+        <h2>Soporta al Bot para ver la señal</h2>
+        <p id="status" style="color: #ccc;">Esperando al servidor de anuncios...</p>
+        
+        <!-- Botón de respaldo por si el auto-play falla -->
+        <button id="retry-btn" onclick="playAd()" style="display:none; background: #0088cc; color: white; border: none; padding: 15px 30px; border-radius: 10px; font-size: 16px; margin-top: 20px;">
+            VER ANUNCIO AHORA
+        </button>
     </div>
 
     <script>
         const tg = window.Telegram.WebApp;
         tg.ready();
-        tg.expand();
 
         function playAd() {
-            // CORRECCIÓN: Quitamos los paréntesis () en el typeof para verificar si la función EXISTE
+            const status = document.getElementById('status');
+            const btn = document.getElementById('retry-btn');
+
             if (typeof show_3327942 === 'function') {
+                status.innerText = "Cargando anuncio...";
+                btn.style.display = "none";
+
                 show_3327942().then(() => {
-                    document.getElementById('status').innerText = "¡Anuncio completado! Gracias por tu soporte.";
-                    
-                    // Esperamos 2 segundos para que el usuario vea el mensaje de éxito y cerramos
-                    setTimeout(() => {
-                        tg.close(); 
-                    }, 2000);
-                }).catch((err) => {
-                    console.error("Error en Ad:", err);
-                    document.getElementById('status').innerText = "El anuncio no está disponible ahora. Volviendo al bot...";
+                    status.innerText = "¡Gracias! Volviendo al bot...";
                     setTimeout(() => { tg.close(); }, 2000);
+                }).catch((err) => {
+                    status.innerText = "No hay anuncios disponibles en este momento.";
+                    btn.style.display = "block";
+                    btn.innerText = "REINTENTAR";
                 });
             } else {
-                // Si el SDK aún no carga, esperamos un segundo y reintentamos
-                document.getElementById('status').innerText = "Conectando con el servidor de anuncios...";
-                setTimeout(playAd, 1000);
+                status.innerText = "Error: El SDK de anuncios no cargó. Revisa si tienes un Bloqueador de Anuncios activo.";
+                btn.style.display = "block";
+                btn.innerText = "INTENTAR CARGAR DE NUEVO";
             }
         }
 
-        // Iniciamos el proceso cuando la página carga
-        window.onload = playAd;
+        // Intentar cargar automáticamente después de 2 segundos para dar tiempo al SDK
+        setTimeout(playAd, 2000);
     </script>
 </body>
 </html>
-
